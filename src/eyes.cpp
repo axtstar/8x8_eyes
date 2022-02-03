@@ -11,6 +11,17 @@ byte column[8];
 byte zero[8];
 
 /**
+ * @brief 
+ * 初期化
+ */
+void eyes_init()
+{
+  pinMode(PIN_SER, OUTPUT);
+  pinMode(PIN_LATCH, OUTPUT);
+  pinMode(PIN_CLK, OUTPUT);
+}
+
+/**
  * 8文字列（01010101など）を1バイトに
  */
 byte getByte(String target)

@@ -16,7 +16,8 @@ void _delay(float seconds)
 
 void setup()
 {
-    for (int count2 = 0; count2 < 10; count2++)
+    eyes_init();
+    for (int count = 0; count < 10; count++)
     {
         // バイト配列生成
         setBytes("0010000001000100001000100000001000000010001000100100010000100000");
@@ -24,6 +25,13 @@ void setup()
         lightOnWait(1);
         // 消灯
         lightOff();
+    }
+
+    while (true)
+    {
+        // ランダムに光る
+        setRandomBytes();
+        lightOnWait(0.1);
     }
 }
 

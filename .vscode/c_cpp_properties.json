@@ -9,7 +9,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/opt/arduino/libraries/**",
-                "/opt/arduino/hardware/**"
+                "/opt/arduino/hardware/**",
+                "/opt/arduino-1.8.19/hardware/**"
             ],
             "forcedInclude": [],
             "cStandard": "gnu17",
