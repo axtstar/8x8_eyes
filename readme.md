@@ -1,10 +1,17 @@
 # これは何?
 
-Kumanのキットでついていた8x8 LEDで遊んでみた記録
+Kumanのキットについていた8x8 LEDで遊んでみた記録
 
-# 8 x8 LED
+動作確認←今ココ  
+makeblockから操作  
 
-1588BSというものだった
+
+# 8 x 8 LED
+
+資料からわかることは、1588BSというものだった
+
+Kumanのキットにはデータシートのようなものはついていなかった。
+
 
 ↓こんなかんじにLEDが（物理的に）配置されている
 
@@ -21,8 +28,7 @@ Kumanのキットでついていた8x8 LEDで遊んでみた記録
 
 Pinは16本しかないので（厳密に）同時に光らせることができるのは、8個のLED
 
-それを高速に行うことで見た目にはずっと光って見えるようにする（残像を利用した）方式
-
+それを高速に行うことで見た目にはずっと光って見えるようにする（残像を利用した）方式っぽい
 
 Pin配置は下記だった
 
@@ -51,13 +57,72 @@ Pin配置は下記だった
 
 Pin 9 = High, Pin 13= Lowで点灯する（ハズ）
 
+![img](img/screenshot_2022-02-03_215729.png)
+
+あってる
+
 # 配線
 
 Pinの数が多いので、節約のため、シフトレジスタを使用
+（そのほうがプログラム的にも楽だった）
 
 74HC595（x 2）を準備した
 
 カソード側に220Ωの抵抗を配置
+
+![img](img/screenshot_2022-02-03_215730_edited.jpg)
+
+TODO　あとで配線図を書く
+
+# 動作確認
+
+Arduino の IDEで動作確認してみた
+
+```ino
+const int PIN_SER   =  8;
+const int PIN_LATCH =  9;
+const int PIN_CLK   = 10;
+
+byte column[8];
+
+void setup() {
+  pinMode( PIN_SER, OUTPUT );
+  pinMode( PIN_LATCH, OUTPUT );
+  pinMode( PIN_CLK, OUTPUT );
+
+  //ここが表示するもの
+  column[0]= 0x80;
+  column[1]= 0x40;
+  column[2]= 0x20;
+  column[3]= 0x10;
+  column[4]= 0x08;
+  column[5]= 0x04;
+  column[6]= 0x02;
+  column[7]= 0x01;
+  while(true){
+    for(int i = 0; i < 8; i++){
+      byte Row = 0;
+      if(column[i]>0){
+          Row = 1 << (8 - i -1);
+      }
+  
+      digitalWrite( PIN_LATCH, LOW );
+      shiftOut( PIN_SER, PIN_CLK, LSBFIRST, ~Row );
+      shiftOut( PIN_SER, PIN_CLK, LSBFIRST, column[i] );
+      digitalWrite( PIN_LATCH, HIGH );
+    }
+  }
+  
+}
+
+void loop() {
+}
+```
+
+![img](img/screenshot_2022-02-03_215731.png)
+
+まぶしいので紙をかぶせた
+
 
 
 # wsl + vscode + arduino 
