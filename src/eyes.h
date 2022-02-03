@@ -1,6 +1,10 @@
 #ifndef eyes_h
 #define eyes_h
 
+#include <Arduino.h>
+#include <Wire.h>
+#include <SoftwareSerial.h>
+
 extern void eyes_init();
 extern byte getByte(String target);
 extern void setBytes(String target);
