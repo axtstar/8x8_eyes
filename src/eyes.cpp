@@ -1,0 +1,106 @@
+#include <Arduino.h>
+#include <Wire.h>
+#include <SoftwareSerial.h>
+#include "eyes.h"
+
+int PIN_SER = 8;
+int PIN_LATCH = 9;
+int PIN_CLK = 10;
+
+byte column[8];
+byte zero[8];
+
+/**
+ * 8文字列（01010101など）を1バイトに
+ */
+byte getByte(String target)
+{
+  Serial.println(target);
+  byte result = 0;
+  for (int i = 0; i < 8; i++)
+  {
+    if (target.substring(i, i + 1) == "1")
+    {
+      result += 1 << (8 - i - 1);
+    }
+  }
+  Serial.println(result, HEX);
+  return result;
+}
+
+/**
+ * 64 string '1000000001000000000000000000000000000000000000000000000000000000'
+ * 8文字づつ区切ってByteに変換
+ */
+void setBytes(String target)
+{
+  for (int i = 0; i < 8; i++)
+  {
+    column[i] = getByte(target.substring(8 * i, 8 * i + 8));
+  }
+  return;
+}
+
+/**
+ * ランダムに64bitを生成
+ * 64 string '1000000001000000000000000000000000000000000000000000000000000000'
+ * 8文字づつ区切ってByteに変換
+ */
+void setRandomBytes()
+{
+  for (int i = 0; i < 8; i++)
+  {
+    column[i] = (byte)random(0, 256);
+  }
+  return;
+}
+
+/**
+* ライトオン
+*/
+void lightOn()
+{
+  for (int i = 0; i < 8; i++)
+  {
+    byte Row = 0;
+    if (column[i] > 0)
+    {
+      Row = 1 << (8 - i - 1);
+    }
+
+    digitalWrite(PIN_LATCH, LOW);
+    shiftOut(PIN_SER, PIN_CLK, LSBFIRST, ~Row);
+    shiftOut(PIN_SER, PIN_CLK, LSBFIRST, column[i]);
+    digitalWrite(PIN_LATCH, HIGH);
+  }
+}
+
+/**
+* ライトオフ
+*/
+void lightOff()
+{
+  for (int i = 0; i < 8; i++)
+  {
+    byte Row = 0;
+    if (zero[i] > 0)
+    {
+      Row = 1 << (8 - i - 1);
+    }
+
+    digitalWrite(PIN_LATCH, LOW);
+    shiftOut(PIN_SER, PIN_CLK, LSBFIRST, ~Row);
+    shiftOut(PIN_SER, PIN_CLK, LSBFIRST, zero[i]);
+    digitalWrite(PIN_LATCH, HIGH);
+  }
+}
+
+/**
+* 待機時間までライトオン
+*/
+void lightOnWait(float seconds)
+{
+  long endTime = millis() + seconds * 1000;
+  while (millis() < endTime)
+    lightOn();
+}
