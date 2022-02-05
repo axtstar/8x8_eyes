@@ -8,9 +8,9 @@
             "intelliSenseMode": "linux-gcc-x64",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/arduino/libraries/**",
-                "/opt/arduino/hardware/**",
-                "/opt/arduino-1.8.19/hardware/**"
+                "/opt/arduino-1.8.19/libraries/**",
+                "/opt/arduino-1.8.19/hardware/**",
+                "/opt/arduino-1.8.19/hardware/arduino/avr/cores/arduino"
             ],
             "forcedInclude": [],
             "cStandard": "gnu17",
