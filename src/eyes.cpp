@@ -11,7 +11,7 @@ byte column[8];
 byte zero[8];
 
 /**
- * @brief 
+ * @brief
  * 初期化
  */
 void eyes_init()
@@ -19,6 +19,8 @@ void eyes_init()
   pinMode(PIN_SER, OUTPUT);
   pinMode(PIN_LATCH, OUTPUT);
   pinMode(PIN_CLK, OUTPUT);
+
+  Serial.begin(9600);
 }
 
 /**
@@ -26,7 +28,8 @@ void eyes_init()
  */
 byte getByte(String target)
 {
-  Serial.println(target);
+  Serial.print(target);
+  Serial.print(':');
   byte result = 0;
   for (int i = 0; i < 8; i++)
   {
@@ -35,7 +38,9 @@ byte getByte(String target)
       result += 1 << (8 - i - 1);
     }
   }
-  Serial.println(result, HEX);
+  char s[2];
+  sprintf(s, "%02X", result);
+  Serial.println(s);
   return result;
 }
 
@@ -54,21 +59,29 @@ void setBytes(String target)
 
 /**
  * ランダムに64bitを生成
- * 64 string '1000000001000000000000000000000000000000000000000000000000000000'
- * 8文字づつ区切ってByteに変換
  */
 void setRandomBytes()
 {
   for (int i = 0; i < 8; i++)
   {
     column[i] = (byte)random(0, 256);
+    char s[2];
+    sprintf(s, "%02X", column[i]);
+    if (i == 7)
+    {
+      Serial.println(s);
+    }
+    else
+    {
+      Serial.print(s);
+    }
   }
   return;
 }
 
 /**
-* ライトオン
-*/
+ * ライトオン
+ */
 void lightOn()
 {
   for (int i = 0; i < 8; i++)
@@ -87,8 +100,8 @@ void lightOn()
 }
 
 /**
-* ライトオフ
-*/
+ * ライトオフ
+ */
 void lightOff()
 {
   for (int i = 0; i < 8; i++)
@@ -107,8 +120,8 @@ void lightOff()
 }
 
 /**
-* 待機時間までライトオン
-*/
+ * 待機時間までライトオン
+ */
 void lightOnWait(float seconds)
 {
   long endTime = millis() + seconds * 1000;
