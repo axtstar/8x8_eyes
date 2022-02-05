@@ -80,6 +80,62 @@ void setRandomBytes()
 }
 
 /**
+ * @brief
+ * 右に1ドットシフト
+ *
+ * @param isRight 右方向
+ */
+void rowShift(bool isRight)
+{
+  int direction = 1;
+
+  if (!isRight)
+  {
+    for (int i = 0; i < 8; i++)
+    {
+      column[i] = column[i] >> direction;
+    }
+  }
+  else
+  {
+    for (int i = 0; i < 8; i++)
+    {
+      column[i] = column[i] << direction;
+    }
+  }
+
+  return;
+}
+
+/**
+ * @brief
+ * 下にシフト
+ *
+ * @param isDown
+ */
+void columnShift(bool isDown)
+{
+  if (isDown)
+  {
+    column[0] = 0;
+    for (int i = 6; i >= 0; i--)
+    {
+      column[i + 1] = column[i];
+    }
+  }
+  else
+  {
+    column[7] = 0;
+    for (int i = 0; i <= 6; i++)
+    {
+      column[i] = column[i + 1];
+    }
+  }
+
+  return;
+}
+
+/**
  * ライトオン
  */
 void lightOn()
