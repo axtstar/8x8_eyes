@@ -117,19 +117,19 @@ void columnShift(bool isDown)
 {
   if (isDown)
   {
-    column[0] = 0;
     for (int i = 6; i >= 0; i--)
     {
       column[i + 1] = column[i];
     }
+    column[0] = 0;
   }
   else
   {
-    column[7] = 0;
     for (int i = 0; i <= 6; i++)
     {
       column[i] = column[i + 1];
     }
+    column[7] = 0;
   }
 
   return;

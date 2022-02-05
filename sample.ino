@@ -40,11 +40,11 @@ void setup()
 
     while (true)
     {
-        // ランダムに光る
+        // ランダムに設定
         setRandomBytes();
-        setBytes("0010000001000100001000100000001000000010001000100100010000100000");
+        // 待機時間まで光る
         lightOnWait(0.5);
-        int r = 2; // random(0, 4);
+        int r = random(0, 4);
         switch (r)
         {
         case 0:
@@ -65,20 +65,24 @@ void setup()
             switch (r)
             {
             case 0:
+                //↓にシフト
                 rowShift(true);
                 break;
             case 1:
+                //↑にシフト
                 rowShift(false);
                 break;
             case 2:
+                //→にシフト
                 columnShift(true);
                 break;
             case 3:
+                //←にシフト
                 columnShift(false);
                 break;
             }
             // 待機時間まで光る
-            lightOnWait(0.8);
+            lightOnWait(0.2);
         }
     }
 }
