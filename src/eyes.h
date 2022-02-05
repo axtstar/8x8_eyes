@@ -6,6 +6,7 @@
 #include <SoftwareSerial.h>
 
 extern void eyes_init();
+extern void eyes_init(int ser, int latch, int clock);
 extern byte getByte(String target);
 extern void setBytes(String target);
 extern void setRandomBytes();

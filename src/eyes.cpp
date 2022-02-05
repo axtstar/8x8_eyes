@@ -3,8 +3,11 @@
 #include <SoftwareSerial.h>
 #include "eyes.h"
 
+//シリアルピン
 int PIN_SER = 8;
+//ラッチピン
 int PIN_LATCH = 9;
+//クロックピン
 int PIN_CLK = 10;
 
 byte column[8];
@@ -21,6 +24,21 @@ void eyes_init()
   pinMode(PIN_CLK, OUTPUT);
 
   Serial.begin(9600);
+}
+
+/**
+ * @brief
+ * PINのアサインを変えて初期化する
+ * @param ser
+ * @param latch
+ * @param clock
+ */
+extern void eyes_init(int ser, int latch, int clock)
+{
+  PIN_SER = ser;
+  PIN_LATCH = latch;
+  PIN_CLK = clock;
+  eyes_init();
 }
 
 /**
