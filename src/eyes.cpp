@@ -99,15 +99,15 @@ void setRandomBytes()
 
 /**
  * @brief
- * 右に1ドットシフト
+ * 上下に1ドットシフト
  *
- * @param isRight 右方向
+ * @param isDown 下方向:true
  */
-void rowShift(bool isRight)
+void rowShift(bool isDown)
 {
   int direction = 1;
 
-  if (!isRight)
+  if (isDown)
   {
     for (int i = 0; i < 8; i++)
     {
@@ -127,13 +127,13 @@ void rowShift(bool isRight)
 
 /**
  * @brief
- * 下にシフト
+ * 左右に1ドットシフト
  *
- * @param isDown
+ * @param isDown 右方向:true
  */
-void columnShift(bool isDown)
+void columnShift(bool isRight)
 {
-  if (isDown)
+  if (isRight)
   {
     for (int i = 6; i >= 0; i--)
     {
